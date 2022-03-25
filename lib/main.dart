@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:my_cv/controllers/social_controller.dart';
 import 'package:my_cv/widgets/SharedWidgets.dart';
 import 'package:my_cv/widgets/bottomNav.dart';
+import 'package:responsive_builder/responsive_builder.dart';
 
 import 'app_config.dart';
 import 'controllers/homeController.dart';
@@ -10,12 +13,14 @@ import 'controllers/projects_controller.dart';
 import 'controllers/skills_controller.dart';
 
 void main() {
+  // runApp(DevicePreview(enabled: true, builder: (c) => MyApp()));
   runApp(MyApp());
 }
 
 final MainController main_controller = Get.put(MainController());
 final Projects_Controller projects_controller = Get.put(Projects_Controller());
 final Skill_Controller skill_controller = Get.put(Skill_Controller());
+final Social_Controller social_controller = Get.put(Social_Controller());
 
 class MobileView extends GetView {
   Widget mPageView() {
@@ -30,7 +35,7 @@ class MobileView extends GetView {
         // bottomTapped: (i) => ),
         title: Text(
           "My CV",
-          style: Data.HEADLINE2,
+          style: Data.H2,
         ),
         centerTitle: true,
         backgroundColor: Colors.pink.shade300,
@@ -40,10 +45,9 @@ class MobileView extends GetView {
         scrollDirection: Axis.horizontal,
         pageSnapping: true,
         children: [
-          SharedWidgets.profile_page(projects_controller),
           SharedWidgets.projects_page(projects_controller),
           SharedWidgets.skils_page(skill_controller),
-          SharedWidgets.social_page(),
+          SharedWidgets.social_page(social_controller),
         ],
         onPageChanged: (value) {
           main_controller.page.value = value;
@@ -68,11 +72,9 @@ class Web extends StatelessWidget {
     return Row(
       children: [
         Expanded(
-            flex: 1, child: SharedWidgets.profile_page(projects_controller)),
-        Expanded(
             flex: 1, child: SharedWidgets.projects_page(projects_controller)),
         Expanded(flex: 2, child: SharedWidgets.skils_page(skill_controller)),
-        Expanded(flex: 1, child: SharedWidgets.social_page()),
+        Expanded(flex: 1, child: SharedWidgets.social_page(social_controller)),
       ],
     );
   }
@@ -83,42 +85,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
+    // var deviceType = getDeviceType(MediaQuery.of(context).size);
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My CV',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ResponsiveLayout(
-        web: Web(),
-        mobile: MobileView(),
-      ),
-    );
-  }
-}
-
-class ResponsiveLayout extends StatefulWidget {
-  const ResponsiveLayout({Key? key, required this.mobile, required this.web})
-      : super(key: key);
-
-  final Widget mobile;
-  final Widget web;
-
-  @override
-  State<ResponsiveLayout> createState() => _ResponsiveLayoutState();
-}
-
-class _ResponsiveLayoutState extends State<ResponsiveLayout> {
-  @override
-  Widget build(BuildContext context) {
-    // var screenWidth =  MediaQuery.of(context).size.width;
-    return LayoutBuilder(
-      builder: (BuildContext context, BoxConstraints constraints) {
-        if (constraints.maxWidth <= Data.mobileScreenW) {
-          return widget.mobile;
-        }
-        return widget.web;
-      },
+      home: Scaffold(
+          body: ScreenTypeLayout(
+        breakpoints: ScreenBreakpoints(
+          tablet: 600,
+          desktop: 700,
+          watch: 300,
+        ),
+        desktop: Container(
+          color: Colors.blue,
+          child: Web(),
+        ),
+        mobile: Container(
+          color: Colors.red,
+          child: MobileView(),
+        ),
+      )),
     );
   }
 }

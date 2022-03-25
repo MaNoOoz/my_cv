@@ -10,35 +10,35 @@ class Data {
     "Accept": "application/json"
   };
 
-  static int mobileScreenW = 760;
+  static double WEB_LAYOUT = 500;
 
-  static final HEADLINE1 = GoogleFonts.oswald(
+  static final H1 = GoogleFonts.oswald(
     textStyle: const TextStyle(
-      fontSize: 22,
+      fontSize: 32,
       fontWeight: FontWeight.bold,
       color: Colors.pinkAccent,
       height: 1.5,
     ),
   );
-  static final HEADLINE2 = GoogleFonts.monoton(
+  static final H2 = GoogleFonts.monoton(
     textStyle: TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w800,
       color: Colors.white,
     ),
   );
-  static final TITLE3 = GoogleFonts.tajawal(
+  static final T1 = GoogleFonts.dmSans(
     textStyle: const TextStyle(
-      fontSize: 25,
+      fontSize: 32,
       fontWeight: FontWeight.w800,
-      color: Colors.pink,
-      height: 1.5,
-      wordSpacing: 1,
-      letterSpacing: 1,
+      color: Colors.black87,
+      // height: 1.5,
+      // wordSpacing: 1,
+      // letterSpacing: 1,
       // decoration: TextDecoration.lineThrough,
     ),
   );
-  static final TITLE2 = GoogleFonts.montserratAlternates(
+  static final T2 = GoogleFonts.montserratAlternates(
     textStyle: const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w800,
@@ -49,7 +49,7 @@ class Data {
       // decoration: TextDecoration.lineThrough,
     ),
   );
-  static final SUBTITLE3 = GoogleFonts.montserratAlternates(
+  static final S1 = GoogleFonts.montserratAlternates(
     textStyle: const TextStyle(
       fontSize: 20,
       fontWeight: FontWeight.w400,
@@ -60,7 +60,7 @@ class Data {
       // decoration: TextDecoration.lineThrough,
     ),
   );
-  static final SMALL = GoogleFonts.montserratAlternates(
+  static final SM1 = GoogleFonts.montserratAlternates(
     textStyle: const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w300,
@@ -71,18 +71,43 @@ class Data {
       // decoration: TextDecoration.lineThrough,
     ),
   );
-  static final SMALL2 = GoogleFonts.montserratAlternates(
+  static final SM2 = GoogleFonts.montserratAlternates(
+    textStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
+        color: Colors.black87,
+        height: 1.5,
+        wordSpacing: 1,
+        letterSpacing: 1,
+        overflow: TextOverflow.ellipsis
+        // decoration: TextDecoration.lineThrough,
+        ),
+  );
+  static final O1 = GoogleFonts.cabin(
+    textStyle: const TextStyle(
+        fontSize: 16,
+        fontWeight: FontWeight.w300,
+        color: Colors.black87,
+        height: 1.5,
+        wordSpacing: 1,
+        letterSpacing: 1,
+        overflow: TextOverflow.ellipsis
+        // decoration: TextDecoration.lineThrough,
+        ),
+  );
+  static final O2 = GoogleFonts.cabin(
     textStyle: const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w300,
-      color: Colors.black54,
+      color: Colors.black87,
       height: 1.5,
       wordSpacing: 1,
       letterSpacing: 1,
+      // overflow: TextOverflow.clip
       // decoration: TextDecoration.lineThrough,
     ),
   );
-  static final SMALL1 = GoogleFonts.montserratAlternates(
+  static final SM3 = GoogleFonts.montserratAlternates(
     textStyle: const TextStyle(
       fontSize: 16,
       fontWeight: FontWeight.w300,
@@ -93,7 +118,7 @@ class Data {
       // decoration: TextDecoration.lineThrough,
     ),
   );
-  static final SMALL3 = GoogleFonts.montserratAlternates(
+  static final SM4 = GoogleFonts.montserratAlternates(
     textStyle: const TextStyle(
       fontSize: 14,
       fontWeight: FontWeight.w300,
@@ -114,11 +139,8 @@ class Data {
     Icons.menu,
   ];
   static final List<String> titels = const [
-    "Profile",
-    // Icons.ondemand_video,
     "Projects",
     "Skills",
-    // MdiIcons.bellOutline,
     "Social",
   ];
 }

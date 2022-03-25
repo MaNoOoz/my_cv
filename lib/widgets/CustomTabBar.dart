@@ -5,7 +5,7 @@ import '../app_config.dart';
 import '../controllers/homeController.dart';
 
 class CustomTabBar extends StatelessWidget {
-  final List<IconData> icons;
+  // final List<IconData> icons;
   final List<String> titles;
   final int? selectedIndex;
   final Function(int) onTap;
@@ -13,7 +13,7 @@ class CustomTabBar extends StatelessWidget {
 
   const CustomTabBar({
     Key? key,
-    required this.icons,
+    // required this.icons,
     required this.titles,
     required this.selectedIndex,
     required this.onTap,
@@ -26,16 +26,16 @@ class CustomTabBar extends StatelessWidget {
 
     print("main_controller.page.value : ${main_controller.page.value}");
     print("selectedIndex: ${selectedIndex}");
-    var icons1 = icons
-        .asMap()
-        .map((key, value) => MapEntry(
-            key,
-            Icon(
-              value,
-              color: Colors.red,
-            )))
-        .values
-        .toList();
+    // var icons1 = icons
+    //     .asMap()
+    //     .map((key, value) => MapEntry(
+    //         key,
+    //         Icon(
+    //           value,
+    //           color: Colors.red,
+    //         )))
+    //     .values
+    //     .toList();
     var titles1 = titles
         .asMap()
         .map((i, e) => MapEntry(
@@ -43,13 +43,13 @@ class CustomTabBar extends StatelessWidget {
               Tab(
                 child: Text(
                   e,
-                  style: Data.SMALL2,
+                  style: Data.SM2,
                 ),
               ),
             ))
         .values
         .toList();
-    Map map = Map.fromIterables(icons, titles1);
+    // Map map = Map.fromIterables(icons, titles1);
     // print("${map}");
 
     return TabBar(

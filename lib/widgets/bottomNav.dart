@@ -17,10 +17,9 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
       padding: const EdgeInsets.only(bottom: 0.0),
       color: Colors.white,
       child: DefaultTabController(
-        length: 4,
+        length: 3,
         initialIndex: selectedIndex,
         child: CustomTabBar(
-          icons: Data.navIcons,
           titles: Data.titels,
           selectedIndex: selectedIndex,
           onTap: (int index) {

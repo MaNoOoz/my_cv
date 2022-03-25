@@ -20,9 +20,12 @@ dependencies:
   google_fonts:
   auto_size_text:
   http: ^0.13.3
+  device_preview:
+  responsive_builder:
   logger:
-  url_launcher:
+  url_launcher: ^6.0.20
   syncfusion_flutter_charts:
+  font_awesome_flutter:
   get:
 
 dev_dependencies:
