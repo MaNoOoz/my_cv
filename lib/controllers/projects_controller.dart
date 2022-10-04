@@ -6,13 +6,12 @@ import 'package:http/http.dart' as http;
 import 'package:my_cv/app_config.dart';
 
 class Projects_Controller extends GetxController {
-   List<dynamic> user_repos = [];
+  List<dynamic> user_repos = [];
 
   Future<List<dynamic>> getUserRepos() async {
-    var url = "${Data.BASE_URL}";
+    var url = Data.BASE_URL;
 
-    var response =
-        await http.get(Uri.parse("$url"), headers: Data.headersNoAuth);
+    var response = await http.get(Uri.parse(url), headers: Data.headersNoAuth);
     if (response.statusCode != 200) {
       return Future.error(response.statusCode);
     } else {

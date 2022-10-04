@@ -11,9 +11,9 @@ class MainController extends GetxController {
   }
 
   animateTo(int page) {
-    if (controller.value.hasClients)
-      controller.value.animateToPage(page,
-          duration: Duration(milliseconds: 300), curve: Curves.easeIn);
+    if (controller.value.hasClients) {
+      controller.value.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+    }
   }
 
   resetController(int page) {

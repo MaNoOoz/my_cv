@@ -8,11 +8,14 @@ import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../app_config.dart';
+import '../charts_sample_data.dart';
 import '../controllers/projects_controller.dart';
 import '../controllers/social_controller.dart';
 import '../main.dart';
 
 class SharedWidgets {
+  static ChartDataLabelPosition _selectedLabelPosition = ChartDataLabelPosition.outside;
+
   static Widget sectionTitle(title) {
     return Container(
       // color: Color(0xFFFFFFFF),
@@ -39,36 +42,77 @@ class SharedWidgets {
     );
   }
 
-  static Widget skils_page(Skill_Controller skill_Controller) {
-    return Expanded(
-      child: ListView(
-        children: [
-          SharedWidgets.sectionTitle("Skills"),
-          GetBuilder<Skill_Controller>(
-            builder: (controller) {
-              return SfCircularChart(
+  static SfPyramidChart _buildPyramidSmartLabelChart() {
+    return SfPyramidChart(
+      onTooltipRender: (TooltipArgs args) {
+        args.text = args.dataPoints![args.pointIndex!.toInt()].y.toString();
+      },
+      title: ChartTitle(text: 'Top 10 populated countries - 2019', textStyle: TextStyle(fontSize: 14)),
+      tooltipBehavior: TooltipBehavior(enable: true),
+      // smartLabelMode: _mode,
+      series: _getPyramidSeries(),
+    );
+  }
+
+  static PyramidSeries<ChartSampleData, String> _getPyramidSeries() {
+    final List<ChartSampleData> pieData = <ChartSampleData>[
+      ChartSampleData(x: 'Mexico', y: 127575529, text: null, pointColor: const Color.fromRGBO(238, 238, 238, 1)),
+      ChartSampleData(x: 'Russia ', y: 145872256, text: null, pointColor: const Color.fromRGBO(255, 240, 219, 1)),
+      ChartSampleData(x: 'Bangladesh', y: 163046161, text: null, pointColor: const Color.fromRGBO(255, 205, 96, 1)),
+      ChartSampleData(x: 'Nigeria ', y: 200963599, text: null, pointColor: const Color.fromRGBO(73, 76, 162, 1)),
+      ChartSampleData(x: 'Brazil', y: 211049527, text: null, pointColor: const Color.fromRGBO(0, 168, 181, 1)),
+      ChartSampleData(x: 'Pakistan ', y: 216565318, text: null, pointColor: const Color.fromRGBO(116, 180, 155, 1)),
+      ChartSampleData(x: 'Indonesia', y: 270625568, text: null, pointColor: const Color.fromRGBO(248, 177, 149, 1)),
+      ChartSampleData(x: 'US', y: 329064917, text: null, pointColor: const Color.fromRGBO(246, 114, 128, 1)),
+      ChartSampleData(x: 'India', y: 1366417754, text: null, pointColor: const Color.fromRGBO(192, 108, 132, 1)),
+      ChartSampleData(x: 'China', y: 1433783686, text: null, pointColor: const Color.fromRGBO(53, 92, 125, 1)),
+    ];
+    return PyramidSeries<ChartSampleData, String>(
+        width: '60%',
+        dataSource: pieData,
+        xValueMapper: (ChartSampleData data, _) => data.x as String,
+        yValueMapper: (ChartSampleData data, _) => data.y,
+        textFieldMapper: (ChartSampleData data, _) => data.x as String,
+        pointColorMapper: (ChartSampleData data, _) => data.pointColor,
+        dataLabelSettings:
+            DataLabelSettings(isVisible: true, labelPosition: _selectedLabelPosition, useSeriesColor: true));
+  }
+
+  static Widget skils_page(Skill_Controller skillController) {
+    return ListView(
+      children: [
+        SharedWidgets.sectionTitle("Skills"),
+        GetBuilder<Skill_Controller>(
+          builder: (controller) {
+            return Container(
+              color: Colors.pink.shade200,
+              child: SfCircularChart(
                 title: ChartTitle(text: 'Known Languages'),
-                legend: Legend(
-                    isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+                legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
                 tooltipBehavior: controller.tooltipBehavior,
                 series: <CircularSeries>[
                   RadialBarSeries<LangsData, String>(
                       dataSource: controller.chartDataLang,
                       xValueMapper: (LangsData data, _) => data.lang,
                       yValueMapper: (LangsData data, _) => data.percentage,
-                      dataLabelSettings: DataLabelSettings(isVisible: true),
+                      dataLabelSettings: const DataLabelSettings(isVisible: true),
                       enableTooltip: true,
                       maximumValue: 100)
                 ],
-              );
-            },
-          ),
-          GetBuilder<Skill_Controller>(
-            builder: (controller) {
-              return SfCircularChart(
+              ),
+            );
+          },
+        ),
+        SizedBox(
+          height: 22,
+        ),
+        GetBuilder<Skill_Controller>(
+          builder: (controller) {
+            return Container(
+              color: Colors.pink.shade200,
+              child: SfCircularChart(
                 title: ChartTitle(text: 'Known Technologies'),
-                legend: Legend(
-                    isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+                legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
                 tooltipBehavior: controller.tooltipBehavior,
                 series: <CircularSeries>[
                   // RadialBarSeries<GDPData, String>(
@@ -82,7 +126,7 @@ class SharedWidgets {
                     dataSource: controller.chartDataTech,
                     xValueMapper: (TechsData data, _) => data.tech,
                     yValueMapper: (TechsData data, _) => data.percentage,
-                    dataLabelSettings: DataLabelSettings(isVisible: true),
+                    dataLabelSettings: const DataLabelSettings(isVisible: true),
                     enableTooltip: true,
                     // maximumValue: 100
                   ),
@@ -95,71 +139,85 @@ class SharedWidgets {
                   //     // maximumValue: 100
                   // ),
                 ],
-              );
-            },
+              ),
+            );
+          },
+        ),
+        Card(
+          color: Colors.pink.shade200,
+          child: Container(
+            height: 100,
           ),
-          Card(
-            color: Colors.pink.shade200,
-            child: Container(
-              height: 100,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
-  static Widget projects_page(Projects_Controller projects_controller) {
-    var resList = projects_controller.user_repos;
-    // print("resList : ${resList.length}");
-    return Scaffold(
-        appBar: AppBar(
-          title: SharedWidgets.sectionTitle("Projects"),
-          backgroundColor: Colors.white,
-          elevation: 0,
+  static Widget skils_page2(Skill_Controller skillController) {
+    return ListView(
+      children: [
+        SharedWidgets.sectionTitle("Skills"),
+        GetBuilder<Skill_Controller>(
+          builder: (controller) {
+            return Container(
+              color: Colors.pink.shade200,
+              child: _buildPyramidSmartLabelChart(),
+            );
+          },
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: FutureBuilder<Object>(
-            // initialData: projects_controller.user_repos,
-            future: projects_controller.getUserRepos(),
-            builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.hasData &&
-                  snapshot.connectionState == ConnectionState.done) {
-                return Expanded(
-                  child: ListView.builder(
-                    itemCount: resList.length,
-                    shrinkWrap: true,
-                    // physics: const NeverScrollableScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    itemBuilder: (BuildContext context, int index) {
-                      return RepoItem(resList, index);
-                    },
+        SizedBox(
+          height: 22,
+        ),
+      ],
+    );
+  }
+
+  static Widget projects_page(Projects_Controller projectsController) {
+    var resList = projectsController.user_repos;
+    // print("resList : ${resList.length}");
+    return Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: FutureBuilder<Object>(
+          // initialData: projects_controller.user_repos,
+          future: projectsController.getUserRepos(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
+              return Column(
+                children: [
+                  SharedWidgets.sectionTitle("Projects"),
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: resList.length,
+                      shrinkWrap: true,
+                      // physics: const NeverScrollableScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      itemBuilder: (BuildContext context, int index) {
+                        return RepoItem(resList, index);
+                      },
+                    ),
                   ),
-                );
-              } else if (snapshot.hasError) {
-                return Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Center(
-                        child: Icon(
-                          Icons.error_outline,
-                          color: Colors.red,
-                        ),
-                      ),
-                      Text(
-                        "${snapshot.error.toString()}",
-                        style: TextStyle(color: Colors.pink, fontSize: 16),
-                      )
-                    ]);
-              } else {
-                return Center(
-                    child: CircularProgressIndicator(
-                  color: Colors.pink.shade200,
-                ));
-              }
-            },
-          ),
+                ],
+              );
+            } else if (snapshot.hasError) {
+              return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+                const Center(
+                  child: Icon(
+                    Icons.error_outline,
+                    color: Colors.red,
+                  ),
+                ),
+                Text(
+                  snapshot.error.toString(),
+                  style: const TextStyle(color: Colors.pink, fontSize: 16),
+                )
+              ]);
+            } else {
+              return Center(
+                  child: CircularProgressIndicator(
+                color: Colors.pink.shade200,
+              ));
+            }
+          },
         ));
   }
 
@@ -193,7 +251,7 @@ class SharedWidgets {
                 leading: CircleAvatar(
                     backgroundColor: Colors.pink.shade200,
                     child: Text(
-                      "${resList[index]['name'].toString().substring(0, 1)}",
+                      resList[index]['name'].toString().substring(0, 1),
                       style: Data.SM2,
                     )),
               ),
@@ -222,17 +280,23 @@ class SharedWidgets {
     );
   }
 
-  static Widget social_page(Social_Controller social_controller) {
+  static Widget social_page(Social_Controller socialController) {
     return Scaffold(
       body: Column(
+        // shrinkWrap: true,
+        // primary: false,
+        // physics: NeverScrollableScrollPhysics(),
+
         children: <Widget>[
+          SharedWidgets.sectionTitle("Contact"),
           Expanded(
             flex: 4,
             child: Container(
               // width: MediaQuery.of(context).size.width,
               width: double.infinity,
+              height: double.infinity,
               padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                   // gradient: new LinearGradient(
                   //   colors: [
                   //     Colors.pink.shade200,
@@ -272,8 +336,12 @@ class SharedWidgets {
                     //   ],
                     // ),
                     Expanded(
-                      child: info("Yaman Alkhateb", "Flutter Developer",
-                          "Riyadh", "https://bio.link/manoooz"),
+                      child: info(
+                        profileName: 'Yaman Alkhateb',
+                        jobDescription: 'Yaman Alkhateb',
+                        location: 'Riyadh',
+                        webLink: 'https://bio.link/manoooz',
+                      ),
                     ),
                   ],
                 );
@@ -285,14 +353,17 @@ class SharedWidgets {
     );
   }
 
-  static Widget info(String profileName, String jobDescription, String location,
-      String webLink) {
+  static Widget info(
+      {required String profileName,
+      required String jobDescription,
+      required String location,
+      required String webLink}) {
     return Stack(
       children: [
         Container(
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.rectangle,
-            image: const DecorationImage(
+            image: DecorationImage(
               opacity: 0.6,
               colorFilter: ColorFilter.mode(Colors.black, BlendMode.colorDodge),
               fit: BoxFit.fill,
@@ -323,14 +394,14 @@ class SharedWidgets {
                   style: Data.H1,
                 ),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               Center(
                 child: Text(
                   jobDescription,
                   style: Data.S1,
                 ),
               ),
-              SizedBox(width: 10.0),
+              const SizedBox(width: 10.0),
               InkWell(
                 child: Text(
                   location,
@@ -356,8 +427,7 @@ class SharedWidgets {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        child: Icon(FontAwesomeIcons.telegram,
-                            color: Colors.pink.shade200, size: 35.0),
+                        child: Icon(FontAwesomeIcons.telegram, color: Colors.pink.shade200, size: 35.0),
                         onTap: () {
                           social_controller.telegramURL("MaNoOoz");
                         },
@@ -366,8 +436,7 @@ class SharedWidgets {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        child: Icon(FontAwesomeIcons.github,
-                            color: Colors.pink.shade200, size: 35.0),
+                        child: Icon(FontAwesomeIcons.github, color: Colors.pink.shade200, size: 35.0),
                         onTap: () {
                           social_controller.githubURL("MaNoOoz");
                         },
@@ -376,8 +445,7 @@ class SharedWidgets {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        child: Icon(FontAwesomeIcons.twitter,
-                            color: Colors.pink.shade200, size: 35.0),
+                        child: Icon(FontAwesomeIcons.twitter, color: Colors.pink.shade200, size: 35.0),
                         onTap: () {
                           social_controller.twitterURL("MaNoOoz77");
                         },
@@ -386,30 +454,25 @@ class SharedWidgets {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        child: Icon(FontAwesomeIcons.googlePlay,
-                            color: Colors.pink.shade200, size: 35.0),
+                        child: Icon(FontAwesomeIcons.googlePlay, color: Colors.pink.shade200, size: 35.0),
                         onTap: () {
-                          social_controller
-                              .googleplayURL("8389389659889758696");
+                          social_controller.googleplayURL("8389389659889758696");
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        child: Icon(FontAwesomeIcons.youtube,
-                            color: Colors.pink.shade200, size: 35.0),
+                        child: Icon(FontAwesomeIcons.youtube, color: Colors.pink.shade200, size: 35.0),
                         onTap: () {
-                          social_controller
-                              .youtubeURL("UCYuo5V0GKQGCStTQBGJQNVQ");
+                          social_controller.youtubeURL("UCYuo5V0GKQGCStTQBGJQNVQ");
                         },
                       ),
                     ),
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: InkWell(
-                        child: Icon(FontAwesomeIcons.linkedinIn,
-                            color: Colors.pink.shade200, size: 35.0),
+                        child: Icon(FontAwesomeIcons.linkedinIn, color: Colors.pink.shade200, size: 35.0),
                         onTap: () {
                           social_controller.linkedinURL("MaNoOoz");
                         },

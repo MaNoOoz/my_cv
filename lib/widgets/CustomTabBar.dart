@@ -22,10 +22,10 @@ class CustomTabBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final MainController main_controller = Get.put(MainController());
+    final MainController mainController = Get.put(MainController());
 
-    print("main_controller.page.value : ${main_controller.page.value}");
-    print("selectedIndex: ${selectedIndex}");
+    print("main_controller.page.value : ${mainController.page.value}");
+    print("selectedIndex: $selectedIndex");
     // var icons1 = icons
     //     .asMap()
     //     .map((key, value) => MapEntry(

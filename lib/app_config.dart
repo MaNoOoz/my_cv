@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -21,7 +20,7 @@ class Data {
     ),
   );
   static final H2 = GoogleFonts.monoton(
-    textStyle: TextStyle(
+    textStyle: const TextStyle(
       fontSize: 22,
       fontWeight: FontWeight.w800,
       color: Colors.white,
@@ -130,7 +129,7 @@ class Data {
     ),
   );
 
-  static final List<IconData> navIcons = const [
+  static const List<IconData> navIcons = [
     Icons.home,
     // Icons.ondemand_video,
     Icons.add,
@@ -138,7 +137,7 @@ class Data {
     // MdiIcons.bellOutline,
     Icons.menu,
   ];
-  static final List<String> titels = const [
+  static const List<String> titels = [
     "Projects",
     "Skills",
     "Social",

@@ -1,5 +1,3 @@
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:my_cv/controllers/social_controller.dart';
@@ -14,7 +12,7 @@ import 'controllers/skills_controller.dart';
 
 void main() {
   // runApp(DevicePreview(enabled: true, builder: (c) => MyApp()));
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 final MainController main_controller = Get.put(MainController());
@@ -71,9 +69,8 @@ class Web extends StatelessWidget {
     // TODO: implement build
     return Row(
       children: [
-        Expanded(
-            flex: 1, child: SharedWidgets.projects_page(projects_controller)),
-        Expanded(flex: 2, child: SharedWidgets.skils_page(skill_controller)),
+        Expanded(flex: 1, child: SharedWidgets.projects_page(projects_controller)),
+        Expanded(flex: 1, child: SharedWidgets.skils_page(skill_controller)),
         Expanded(flex: 1, child: SharedWidgets.social_page(social_controller)),
       ],
     );
@@ -81,7 +78,7 @@ class Web extends StatelessWidget {
 }
 
 class MyApp extends StatelessWidget {
-  MyApp({Key? key}) : super(key: key);
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -91,17 +88,17 @@ class MyApp extends StatelessWidget {
       title: 'My CV',
       home: Scaffold(
           body: ScreenTypeLayout(
-        breakpoints: ScreenBreakpoints(
+        breakpoints: const ScreenBreakpoints(
           tablet: 600,
           desktop: 700,
           watch: 300,
         ),
         desktop: Container(
-          color: Colors.blue,
+          // color: Colors.blue,
           child: Web(),
         ),
         mobile: Container(
-          color: Colors.red,
+          // color: Colors.red,
           child: MobileView(),
         ),
       )),
