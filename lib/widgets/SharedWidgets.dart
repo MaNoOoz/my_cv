@@ -173,52 +173,27 @@ class SharedWidgets {
   }
 
   static Widget projects_page(Projects_Controller projectsController) {
-    var resList = projectsController.user_repos;
-    // print("resList : ${resList.length}");
-    return Padding(
+    return Obx(() {
+      return Padding(
         padding: const EdgeInsets.all(8.0),
-        child: FutureBuilder<Object>(
-          // initialData: projects_controller.user_repos,
-          future: projectsController.getUserRepos(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.hasData && snapshot.connectionState == ConnectionState.done) {
-              return Column(
-                children: [
-                  SharedWidgets.sectionTitle("Projects"),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: resList.length,
-                      shrinkWrap: true,
-                      // physics: const NeverScrollableScrollPhysics(),
-                      scrollDirection: Axis.vertical,
-                      itemBuilder: (BuildContext context, int index) {
-                        return RepoItem(resList, index);
-                      },
-                    ),
-                  ),
-                ],
-              );
-            } else if (snapshot.hasError) {
-              return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                const Center(
-                  child: Icon(
-                    Icons.error_outline,
-                    color: Colors.red,
-                  ),
-                ),
-                Text(
-                  snapshot.error.toString(),
-                  style: const TextStyle(color: Colors.pink, fontSize: 16),
-                )
-              ]);
-            } else {
-              return Center(
-                  child: CircularProgressIndicator(
-                color: Colors.pink.shade200,
-              ));
-            }
-          },
-        ));
+        child: Column(
+          children: [
+            SharedWidgets.sectionTitle("Projects"),
+            Expanded(
+              child: ListView.builder(
+                itemCount: projectsController.user_repos.length,
+                shrinkWrap: true,
+                // physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemBuilder: (BuildContext context, int index) {
+                  return RepoItem(projectsController.user_repos, index);
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+    });
   }
 
   static Widget RepoItem(List<dynamic> resList, int index) {
@@ -255,13 +230,27 @@ class SharedWidgets {
                       style: Data.SM2,
                     )),
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  "${resList[index]["description"] ?? "no info"}",
-                  style: Data.SM2,
-                ),
-              ),
+              ExpansionTile(
+                  title: Text(
+                    "${resList[index]["language"] ?? "no info"}",
+                    style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+                  ),
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "${resList[index]["owner"]['login'] ?? "no info"}",
+                        style: Data.SM2,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "",
+                        style: Data.SM2,
+                      ),
+                    ),
+                  ]),
               // Padding(
               //   padding: const EdgeInsets.all(8.0),
               //   child: ListTile(
@@ -338,6 +327,80 @@ class SharedWidgets {
                     Expanded(
                       child: info(
                         profileName: 'Yaman Alkhateb',
+                        jobDescription: 'Yaman Alkhateb',
+                        location: 'Riyadh',
+                        webLink: 'https://bio.link/manoooz',
+                      ),
+                    ),
+                  ],
+                );
+              }),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget social_page2(Social_Controller socialController) {
+    return Scaffold(
+      body: Column(
+        // shrinkWrap: true,
+        // primary: false,
+        // physics: NeverScrollableScrollPhysics(),
+
+        children: <Widget>[
+          SharedWidgets.sectionTitle("Contact"),
+          Expanded(
+            flex: 4,
+            child: Container(
+              // width: MediaQuery.of(context).size.width,
+              width: double.infinity,
+              height: double.infinity,
+              padding: const EdgeInsets.all(8.0),
+              decoration: const BoxDecoration(
+                  // gradient: new LinearGradient(
+                  //   colors: [
+                  //     Colors.pink.shade200,
+                  //     Colors.pink.shade100,
+                  //   ],
+                  //   begin: Alignment.center,
+                  //   end: new Alignment(-1.0, -1.0),
+                  // ),
+                  ),
+              child: GetBuilder<Social_Controller>(builder: (logic) {
+                var user = logic.gitHubUser;
+                return Column(
+                  children: <Widget>[
+                    // Stack(
+                    //   children: [
+                    //     Container(
+                    //       // color: Colors.pink.shade200,
+                    //       height: 200,
+                    //       width: double.infinity,
+                    //       decoration: BoxDecoration(
+                    //         shape: BoxShape.rectangle,
+                    //         image: DecorationImage(
+                    //           fit: BoxFit.cover,
+                    //           image: AssetImage("assets/giphy.gif"),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //     Column(
+                    //       mainAxisAlignment: MainAxisAlignment.center,
+                    //       children: [
+                    //
+                    //       ],
+                    //     ),
+                    //     // Container(
+                    //     //   color: Colors.black.withOpacity(0.5),
+                    //     //   height: 200,
+                    //     // ),
+                    //   ],
+                    // ),
+                    Expanded(
+                      child: info(
+                        profileName: '${user.name}',
                         jobDescription: 'Yaman Alkhateb',
                         location: 'Riyadh',
                         webLink: 'https://bio.link/manoooz',

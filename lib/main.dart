@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 import 'package:my_cv/controllers/social_controller.dart';
 import 'package:my_cv/widgets/SharedWidgets.dart';
 import 'package:my_cv/widgets/bottomNav.dart';
@@ -20,9 +21,15 @@ final Projects_Controller projects_controller = Get.put(Projects_Controller());
 final Skill_Controller skill_controller = Get.put(Skill_Controller());
 final Social_Controller social_controller = Get.put(Social_Controller());
 
-class MobileView extends GetView {
+class MobileView extends StatelessWidget {
   Widget mPageView() {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     projects_controller.user_repos.clear();
+      //     projects_controller.onInit();
+      //   },
+      // ),
       appBar: AppBar(
         bottom: TopNav(
             pageController: main_controller.controller.value,
@@ -44,13 +51,17 @@ class MobileView extends GetView {
         pageSnapping: true,
         children: [
           SharedWidgets.projects_page(projects_controller),
+          // Container(),
           SharedWidgets.skils_page(skill_controller),
-          SharedWidgets.social_page(social_controller),
+          SharedWidgets.social_page2(social_controller),
         ],
         onPageChanged: (value) {
           main_controller.page.value = value;
           // main_controller.onPageChanged(value);
-          print("onPageChanged: $value");
+          // if (value == 2) {
+          //   Social_Controller().getUserInfo();
+          // }
+          Logger().d("onPageChanged $value");
           // print("onPageChanged: ${main_controller.onPageChanged(value)}");
         },
       ),
@@ -63,19 +74,19 @@ class MobileView extends GetView {
   }
 }
 
-class Web extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Row(
-      children: [
-        Expanded(flex: 1, child: SharedWidgets.projects_page(projects_controller)),
-        Expanded(flex: 1, child: SharedWidgets.skils_page(skill_controller)),
-        Expanded(flex: 1, child: SharedWidgets.social_page(social_controller)),
-      ],
-    );
-  }
-}
+// class Web extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     // TODO: implement build
+//     return Row(
+//       children: [
+//         Expanded(flex: 1, child: SharedWidgets.projects_page(projects_controller)),
+//         Expanded(flex: 1, child: SharedWidgets.skils_page(skill_controller)),
+//         Expanded(flex: 1, child: SharedWidgets.social_page(social_controller)),
+//       ],
+//     );
+//   }
+// }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -94,9 +105,9 @@ class MyApp extends StatelessWidget {
           watch: 300,
         ),
         desktop: Container(
-          // color: Colors.blue,
-          child: Web(),
-        ),
+            // color: Colors.blue,
+            // child: Web(),
+            ),
         mobile: Container(
           // color: Colors.red,
           child: MobileView(),

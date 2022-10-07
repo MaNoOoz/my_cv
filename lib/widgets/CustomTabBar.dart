@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:logger/logger.dart';
 
 import '../app_config.dart';
 import '../controllers/homeController.dart';
@@ -23,9 +24,8 @@ class CustomTabBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MainController mainController = Get.put(MainController());
-
-    print("main_controller.page.value : ${mainController.page.value}");
-    print("selectedIndex: $selectedIndex");
+    Logger().d("main_controller.page.value : ${mainController.page.value}");
+    Logger().d("selectedIndex $selectedIndex");
     // var icons1 = icons
     //     .asMap()
     //     .map((key, value) => MapEntry(
@@ -60,10 +60,7 @@ class CustomTabBar extends StatelessWidget {
       indicatorColor: Colors.red,
       indicator: BoxDecoration(
         border: Border(
-          bottom: BorderSide(
-              color: Colors.pink.shade200,
-              width: 3.0,
-              style: BorderStyle.solid),
+          bottom: BorderSide(color: Colors.pink.shade200, width: 3.0, style: BorderStyle.solid),
         ),
       ),
       tabs: titles1,

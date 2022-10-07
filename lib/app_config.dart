@@ -1,13 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Data {
-  static String BASE_URL = "https://api.github.com/users/manoooz/repos";
-  static Map<String, String> headersNoAuth = {
-    'Content-Type': 'text/plain',
-    "Accept": "application/json"
-  };
+  static String BASE_URL = "https://api.github.com/users/manoooz";
+  static Map<String, String> headersNoAuth = {'Content-Type': 'text/plain', "Accept": "application/json"};
 
   static double WEB_LAYOUT = 500;
 
