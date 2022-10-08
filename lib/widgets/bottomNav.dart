@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import '../app_config.dart';
 import 'CustomTabBar.dart';
 
-class TopNav extends StatelessWidget implements PreferredSizeWidget {
+class BottomNav extends StatelessWidget implements PreferredSizeWidget {
   int selectedIndex;
   final PageController? pageController;
   final Function? bottomTapped;
 
-  TopNav({required this.selectedIndex, this.pageController, this.bottomTapped});
+  BottomNav({required this.selectedIndex, this.pageController, this.bottomTapped});
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class TopNav extends StatelessWidget implements PreferredSizeWidget {
         length: 3,
         initialIndex: selectedIndex,
         child: CustomTabBar(
-          titles: Data.titels,
+          Data.titels,
           selectedIndex: selectedIndex,
           onTap: (int index) {
             return bottomTapped!(index);

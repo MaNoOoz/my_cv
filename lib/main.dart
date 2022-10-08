@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:logger/logger.dart';
 import 'package:my_cv/controllers/social_controller.dart';
 import 'package:my_cv/widgets/SharedWidgets.dart';
 import 'package:my_cv/widgets/bottomNav.dart';
@@ -13,6 +12,7 @@ import 'controllers/skills_controller.dart';
 
 void main() {
   // runApp(DevicePreview(enabled: true, builder: (c) => MyApp()));
+
   runApp(const MyApp());
 }
 
@@ -21,8 +21,40 @@ final Projects_Controller projects_controller = Get.put(Projects_Controller());
 final Skill_Controller skill_controller = Get.put(Skill_Controller());
 final Social_Controller social_controller = Get.put(Social_Controller());
 
-class MobileView extends StatelessWidget {
-  Widget mPageView() {
+class MobileView extends StatelessWidget implements PreferredSizeWidget {
+  @override
+  Size get preferredSize => Size.fromHeight(kToolbarHeight);
+
+  PageView _pageView() {
+    return PageView(
+      controller: main_controller.controller.value,
+      scrollDirection: Axis.horizontal,
+      pageSnapping: true,
+      physics: const NeverScrollableScrollPhysics(),
+      children: [
+        SharedWidgets.projects_page(projects_controller),
+        SharedWidgets.skils_page(skill_controller),
+        Obx(() {
+          return SharedWidgets.social_page3(social_controller);
+        }),
+      ],
+    );
+  }
+
+  _buildBottomBar() {
+    return PreferredSize(
+      preferredSize: preferredSize,
+      child: Obx(() {
+        return BottomNav(
+            pageController: main_controller.controller.value,
+            selectedIndex: main_controller.page.value,
+            bottomTapped: main_controller.animateTo);
+      }),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       // floatingActionButton: FloatingActionButton(
       //   onPressed: () {
@@ -31,12 +63,7 @@ class MobileView extends StatelessWidget {
       //   },
       // ),
       appBar: AppBar(
-        bottom: TopNav(
-            pageController: main_controller.controller.value,
-            selectedIndex: main_controller.page.value,
-            bottomTapped: (i) {
-              main_controller.animateTo(i);
-            }),
+        bottom: _buildBottomBar(),
         // bottomTapped: (i) => ),
         title: Text(
           "My CV",
@@ -45,55 +72,30 @@ class MobileView extends StatelessWidget {
         centerTitle: true,
         backgroundColor: Colors.pink.shade300,
       ),
-      body: PageView(
-        controller: main_controller.controller.value,
-        scrollDirection: Axis.horizontal,
-        pageSnapping: true,
-        children: [
-          SharedWidgets.projects_page(projects_controller),
-          // Container(),
-          SharedWidgets.skils_page(skill_controller),
-          SharedWidgets.social_page2(social_controller),
-        ],
-        onPageChanged: (value) {
-          main_controller.page.value = value;
-          // main_controller.onPageChanged(value);
-          // if (value == 2) {
-          //   Social_Controller().getUserInfo();
-          // }
-          Logger().d("onPageChanged $value");
-          // print("onPageChanged: ${main_controller.onPageChanged(value)}");
-        },
-      ),
+      body: _pageView(),
     );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return mPageView();
   }
 }
 
-// class Web extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     // TODO: implement build
-//     return Row(
-//       children: [
-//         Expanded(flex: 1, child: SharedWidgets.projects_page(projects_controller)),
-//         Expanded(flex: 1, child: SharedWidgets.skils_page(skill_controller)),
-//         Expanded(flex: 1, child: SharedWidgets.social_page(social_controller)),
-//       ],
-//     );
-//   }
-// }
+class Web extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+    return Row(
+      children: [
+        Expanded(flex: 1, child: SharedWidgets.projects_page(projects_controller)),
+        Expanded(flex: 1, child: SharedWidgets.skils_page(skill_controller)),
+        Expanded(flex: 1, child: SharedWidgets.social_page3(social_controller)),
+      ],
+    );
+  }
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    // var deviceType = getDeviceType(MediaQuery.of(context).size);
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'My CV',
@@ -105,9 +107,9 @@ class MyApp extends StatelessWidget {
           watch: 300,
         ),
         desktop: Container(
-            // color: Colors.blue,
-            // child: Web(),
-            ),
+          // color: Colors.blue,
+          child: Web(),
+        ),
         mobile: Container(
           // color: Colors.red,
           child: MobileView(),

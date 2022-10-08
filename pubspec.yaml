@@ -17,6 +17,7 @@ dependencies:
 
 
   cupertino_icons: ^1.0.2
+  animate_do:
   google_fonts:
   auto_size_text:
   http: ^0.13.3

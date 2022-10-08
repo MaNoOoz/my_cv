@@ -10,14 +10,16 @@ class Social_Controller extends GetxController {
   var height = 160.0;
   var width = 160.0;
   var shape = BoxShape.circle;
-  late GitHubUser gitHubUser;
+
+  // late GitHubUser gitHubUser;
+  Rxn<GitHubUser> gitHubUser = Rxn<GitHubUser>();
 
   var user = {};
 
   @override
   void onInit() async {
     super.onInit();
-    gitHubUser = await getUserInfo();
+    gitHubUser.value = await getUserInfo();
   }
 
   Future<GitHubUser> getUserInfo() async {

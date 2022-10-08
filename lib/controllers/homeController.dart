@@ -6,10 +6,6 @@ class MainController extends GetxController {
   var controller = PageController().obs;
   var fromController = ScrollController(initialScrollOffset: 0.0).obs;
 
-  onPageChanged(input) {
-    page.value = input;
-  }
-
   animateTo(int page) {
     if (controller.value.hasClients) {
       controller.value.animateToPage(page, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
