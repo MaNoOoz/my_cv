@@ -16,8 +16,8 @@ class TechsData {
 }
 
 class Skill_Controller extends GetxController {
-  late List<LangsData> chartDataLang;
-  late List<TechsData> chartDataTech;
+  late List<LangsData> chartDataLang = <LangsData>[].obs;
+  late List<TechsData> chartDataTech = <TechsData>[].obs;
 
   late TooltipBehavior tooltipBehavior;
 

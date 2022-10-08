@@ -3,7 +3,6 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:my_cv/controllers/skills_controller.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -15,34 +14,8 @@ import '../controllers/social_controller.dart';
 import '../main.dart';
 
 class SharedWidgets {
+  // Charts =================================================================================
   static ChartDataLabelPosition _selectedLabelPosition = ChartDataLabelPosition.outside;
-
-  static Widget sectionTitle(title) {
-    return Container(
-      // color: Color(0xFFFFFFFF),
-      child: Padding(
-        padding: const EdgeInsets.all(18.0),
-        child: Align(
-          alignment: AlignmentDirectional.center,
-          child: AutoSizeText.rich(
-            TextSpan(
-              style: Data.H1,
-              children: [
-                TextSpan(
-                  text: "$title",
-                ),
-                // TextSpan(
-                //   style: fontStyle.copyWith(color: Colors.blue),
-                //   text: "  (${model.comments!.length})",
-                // ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   static SfPyramidChart _buildPyramidSmartLabelChart() {
     return SfPyramidChart(
       onTooltipRender: (TooltipArgs args) {
@@ -79,70 +52,64 @@ class SharedWidgets {
             DataLabelSettings(isVisible: true, labelPosition: _selectedLabelPosition, useSeriesColor: true));
   }
 
+  // Pages =================================================================================
+
   static Widget skils_page(Skill_Controller skillController) {
     return ListView(
       children: [
         SharedWidgets.sectionTitle("Skills"),
-        GetBuilder<Skill_Controller>(
-          builder: (controller) {
-            return Container(
-              color: Colors.pink.shade200,
-              child: SfCircularChart(
-                title: ChartTitle(text: 'Known Languages'),
-                legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-                tooltipBehavior: controller.tooltipBehavior,
-                series: <CircularSeries>[
-                  RadialBarSeries<LangsData, String>(
-                      dataSource: controller.chartDataLang,
-                      xValueMapper: (LangsData data, _) => data.lang,
-                      yValueMapper: (LangsData data, _) => data.percentage,
-                      dataLabelSettings: const DataLabelSettings(isVisible: true),
-                      enableTooltip: true,
-                      maximumValue: 100)
-                ],
-              ),
-            );
-          },
+        Container(
+          color: Colors.pink.shade200,
+          child: SfCircularChart(
+            title: ChartTitle(text: 'Known Languages'),
+            legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+            tooltipBehavior: skillController.tooltipBehavior,
+            series: <CircularSeries>[
+              RadialBarSeries<LangsData, String>(
+                  dataSource: skillController.chartDataLang,
+                  xValueMapper: (LangsData data, _) => data.lang,
+                  yValueMapper: (LangsData data, _) => data.percentage,
+                  dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  enableTooltip: true,
+                  maximumValue: 100)
+            ],
+          ),
         ),
         const SizedBox(
           height: 22,
         ),
-        GetBuilder<Skill_Controller>(
-          builder: (controller) {
-            return Container(
-              color: Colors.pink.shade200,
-              child: SfCircularChart(
-                title: ChartTitle(text: 'Known Technologies'),
-                legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
-                tooltipBehavior: controller.tooltipBehavior,
-                series: <CircularSeries>[
-                  // RadialBarSeries<GDPData, String>(
-                  //     dataSource: controller.chartData,
-                  //     xValueMapper: (GDPData data, _) => data.lang,
-                  //     yValueMapper: (GDPData data, _) => data.gdp,
-                  //     dataLabelSettings: DataLabelSettings(isVisible: true),
-                  //     enableTooltip: true,
-                  //     maximumValue: 100),
-                  PieSeries<TechsData, String>(
-                    dataSource: controller.chartDataTech,
-                    xValueMapper: (TechsData data, _) => data.tech,
-                    yValueMapper: (TechsData data, _) => data.percentage,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true),
-                    enableTooltip: true,
-                    // maximumValue: 100
-                  ),
-                  // DoughnutSeries<GDPData, String>(
-                  //     dataSource: controller.chartData,
-                  //     xValueMapper: (GDPData data, _) => data.lang,
-                  //     yValueMapper: (GDPData data, _) => data.gdp,
-                  //     dataLabelSettings: DataLabelSettings(isVisible: true),
-                  //     enableTooltip: true,
-                  //     // maximumValue: 100
-                  // ),
-                ],
+        Container(
+          color: Colors.pink.shade200,
+          child: SfCircularChart(
+            title: ChartTitle(text: 'Known Technologies'),
+            legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+            tooltipBehavior: skillController.tooltipBehavior,
+            series: <CircularSeries>[
+              // RadialBarSeries<GDPData, String>(
+              //     dataSource: controller.chartData,
+              //     xValueMapper: (GDPData data, _) => data.lang,
+              //     yValueMapper: (GDPData data, _) => data.gdp,
+              //     dataLabelSettings: DataLabelSettings(isVisible: true),
+              //     enableTooltip: true,
+              //     maximumValue: 100),
+              PieSeries<TechsData, String>(
+                dataSource: skillController.chartDataTech,
+                xValueMapper: (TechsData data, _) => data.tech,
+                yValueMapper: (TechsData data, _) => data.percentage,
+                dataLabelSettings: const DataLabelSettings(isVisible: true),
+                enableTooltip: true,
+                // maximumValue: 100
               ),
-            );
-          },
+              // DoughnutSeries<GDPData, String>(
+              //     dataSource: controller.chartData,
+              //     xValueMapper: (GDPData data, _) => data.lang,
+              //     yValueMapper: (GDPData data, _) => data.gdp,
+              //     dataLabelSettings: DataLabelSettings(isVisible: true),
+              //     enableTooltip: true,
+              //     // maximumValue: 100
+              // ),
+            ],
+          ),
         ),
         Card(
           color: Colors.pink.shade200,
@@ -158,16 +125,78 @@ class SharedWidgets {
     return ListView(
       children: [
         SharedWidgets.sectionTitle("Skills"),
-        GetBuilder<Skill_Controller>(
-          builder: (controller) {
-            return Container(
-              color: Colors.pink.shade200,
-              child: _buildPyramidSmartLabelChart(),
-            );
-          },
+        Container(
+          color: Colors.pink.shade200,
+          child: _buildPyramidSmartLabelChart(),
         ),
         const SizedBox(
           height: 22,
+        ),
+      ],
+    );
+  }
+
+  static Widget skils_page3(Skill_Controller skillController) {
+    return ListView(
+      children: [
+        Container(
+          color: Colors.pink.shade200,
+          child: SfCircularChart(
+            title: ChartTitle(text: 'Known Languages'),
+            legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+            tooltipBehavior: skillController.tooltipBehavior,
+            series: <CircularSeries>[
+              RadialBarSeries<LangsData, String>(
+                  dataSource: skillController.chartDataLang,
+                  xValueMapper: (LangsData data, _) => data.lang,
+                  yValueMapper: (LangsData data, _) => data.percentage,
+                  dataLabelSettings: const DataLabelSettings(isVisible: true),
+                  enableTooltip: true,
+                  maximumValue: 100)
+            ],
+          ),
+        ),
+        const SizedBox(
+          height: 22,
+        ),
+        Container(
+          color: Colors.pink.shade200,
+          child: SfCircularChart(
+            title: ChartTitle(text: 'Known Technologies'),
+            legend: Legend(isVisible: true, overflowMode: LegendItemOverflowMode.wrap),
+            tooltipBehavior: skillController.tooltipBehavior,
+            series: <CircularSeries>[
+              // RadialBarSeries<GDPData, String>(
+              //     dataSource: controller.chartData,
+              //     xValueMapper: (GDPData data, _) => data.lang,
+              //     yValueMapper: (GDPData data, _) => data.gdp,
+              //     dataLabelSettings: DataLabelSettings(isVisible: true),
+              //     enableTooltip: true,
+              //     maximumValue: 100),
+              PieSeries<TechsData, String>(
+                dataSource: skillController.chartDataTech,
+                xValueMapper: (TechsData data, _) => data.tech,
+                yValueMapper: (TechsData data, _) => data.percentage,
+                dataLabelSettings: const DataLabelSettings(isVisible: true),
+                enableTooltip: true,
+                // maximumValue: 100
+              ),
+              // DoughnutSeries<GDPData, String>(
+              //     dataSource: controller.chartData,
+              //     xValueMapper: (GDPData data, _) => data.lang,
+              //     yValueMapper: (GDPData data, _) => data.gdp,
+              //     dataLabelSettings: DataLabelSettings(isVisible: true),
+              //     enableTooltip: true,
+              //     // maximumValue: 100
+              // ),
+            ],
+          ),
+        ),
+        Card(
+          color: Colors.pink.shade200,
+          child: Container(
+            height: 100,
+          ),
         ),
       ],
     );
@@ -259,124 +288,6 @@ class SharedWidgets {
             ],
           ),
         ),
-      ),
-    );
-  }
-
-  static Widget social_page(Social_Controller socialController) {
-    return Scaffold(
-      body: Column(
-        // shrinkWrap: true,
-        // primary: false,
-        // physics: NeverScrollableScrollPhysics(),
-
-        children: <Widget>[
-          SharedWidgets.sectionTitle("Contact"),
-          Expanded(
-            flex: 4,
-            child: Container(
-              // width: MediaQuery.of(context).size.width,
-              width: double.infinity,
-              height: double.infinity,
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [
-                    Colors.pink.shade200,
-                    Colors.pink.shade100,
-                  ],
-                  begin: Alignment.center,
-                  end: new Alignment(-1.0, -1.0),
-                ),
-              ),
-              child: GetBuilder<Social_Controller>(builder: (logic) {
-                return Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: info(
-                        profileName: 'Yaman Alkhateb',
-                        jobDescription: 'Yaman Alkhateb',
-                        location: 'Riyadh',
-                        webLink: 'https://bio.link/manoooz',
-                        profilePic: '',
-                      ),
-                    ),
-                  ],
-                );
-              }),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  static Widget social_page2(Social_Controller socialController) {
-    return Scaffold(
-      body: Column(
-        children: <Widget>[
-          // SharedWidgets.sectionTitle("Contact"),
-          Expanded(
-            flex: 4,
-            child: Container(
-              // width: MediaQuery.of(context).size.width,
-              width: double.infinity,
-              height: double.infinity,
-              padding: const EdgeInsets.all(0.0),
-              decoration: BoxDecoration(
-                gradient: new LinearGradient(
-                  colors: [
-                    Colors.pink.shade200,
-                    Colors.pink.shade100,
-                  ],
-                  begin: Alignment.center,
-                  end: new Alignment(-1.0, -1.0),
-                ),
-              ),
-              child: GetBuilder<Social_Controller>(builder: (logic) {
-                var user = logic.gitHubUser;
-                return Column(
-                  children: <Widget>[
-                    // Stack(
-                    //   children: [
-                    //     Container(
-                    //       // color: Colors.pink.shade200,
-                    //       height: 200,
-                    //       width: double.infinity,
-                    //       decoration: BoxDecoration(
-                    //         shape: BoxShape.rectangle,
-                    //         image: DecorationImage(
-                    //           fit: BoxFit.cover,
-                    //           image: AssetImage("assets/giphy.gif"),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //     Column(
-                    //       mainAxisAlignment: MainAxisAlignment.center,
-                    //       children: [
-                    //
-                    //       ],
-                    //     ),
-                    //     // Container(
-                    //     //   color: Colors.black.withOpacity(0.5),
-                    //     //   height: 200,
-                    //     // ),
-                    //   ],
-                    // ),
-                    Expanded(
-                      child: info(
-                          profileName: '${user.value?.name}',
-                          jobDescription: 'Yaman Alkhateb',
-                          location: '${user.value?.location}',
-                          webLink: 'https://bio.link/manoooz',
-                          profilePic: '${user.value?.avatarUrl}'),
-                    ),
-                  ],
-                );
-              }),
-            ),
-          ),
-        ],
       ),
     );
   }
@@ -544,6 +455,98 @@ class SharedWidgets {
         });
   }
 
+  // Items =================================================================================
+
+  static Padding socialLinks() {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Wrap(
+        children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Icon(FontAwesomeIcons.telegram, color: Colors.pink.shade200, size: 35.0),
+              onTap: () {
+                social_controller.telegramURL("MaNoOoz");
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Icon(FontAwesomeIcons.github, color: Colors.pink.shade200, size: 35.0),
+              onTap: () {
+                social_controller.githubURL("MaNoOoz");
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Icon(FontAwesomeIcons.twitter, color: Colors.pink.shade200, size: 35.0),
+              onTap: () {
+                social_controller.twitterURL("MaNoOoz77");
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Icon(FontAwesomeIcons.googlePlay, color: Colors.pink.shade200, size: 35.0),
+              onTap: () {
+                social_controller.googleplayURL("8389389659889758696");
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Icon(FontAwesomeIcons.youtube, color: Colors.pink.shade200, size: 35.0),
+              onTap: () {
+                social_controller.youtubeURL("UCYuo5V0GKQGCStTQBGJQNVQ");
+              },
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: InkWell(
+              child: Icon(FontAwesomeIcons.linkedinIn, color: Colors.pink.shade200, size: 35.0),
+              onTap: () {
+                social_controller.linkedinURL("MaNoOoz");
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  static Widget sectionTitle(title) {
+    return Container(
+      // color: Color(0xFFFFFFFF),
+      child: Padding(
+        padding: const EdgeInsets.all(18.0),
+        child: Align(
+          alignment: AlignmentDirectional.center,
+          child: AutoSizeText.rich(
+            TextSpan(
+              style: Data.H1,
+              children: [
+                TextSpan(
+                  text: "$title",
+                ),
+                // TextSpan(
+                //   style: fontStyle.copyWith(color: Colors.blue),
+                //   text: "  (${model.comments!.length})",
+                // ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   static Widget info(
       {required String profileName,
       required String jobDescription,
@@ -618,70 +621,6 @@ class SharedWidgets {
           ),
         ),
       ],
-    );
-  }
-
-  static Padding socialLinks() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Wrap(
-        children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Icon(FontAwesomeIcons.telegram, color: Colors.pink.shade200, size: 35.0),
-              onTap: () {
-                social_controller.telegramURL("MaNoOoz");
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Icon(FontAwesomeIcons.github, color: Colors.pink.shade200, size: 35.0),
-              onTap: () {
-                social_controller.githubURL("MaNoOoz");
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Icon(FontAwesomeIcons.twitter, color: Colors.pink.shade200, size: 35.0),
-              onTap: () {
-                social_controller.twitterURL("MaNoOoz77");
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Icon(FontAwesomeIcons.googlePlay, color: Colors.pink.shade200, size: 35.0),
-              onTap: () {
-                social_controller.googleplayURL("8389389659889758696");
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Icon(FontAwesomeIcons.youtube, color: Colors.pink.shade200, size: 35.0),
-              onTap: () {
-                social_controller.youtubeURL("UCYuo5V0GKQGCStTQBGJQNVQ");
-              },
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: InkWell(
-              child: Icon(FontAwesomeIcons.linkedinIn, color: Colors.pink.shade200, size: 35.0),
-              onTap: () {
-                social_controller.linkedinURL("MaNoOoz");
-              },
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
